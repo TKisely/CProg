@@ -2,6 +2,7 @@
 // on Linked List
 #include <stdio.h>
 #include <stdlib.h>
+#include<stdbool.h>
 
 // A linked list node
 struct Node
@@ -80,7 +81,59 @@ void append(struct Node** head_ref, int new_data)
 
     /* 6. Change the next of last node */
     last->next = new_node;
-    return;
+}
+
+/* Given a reference (pointer to pointer) to the head of a list
+   and a key, deletes the first occurrence of key in linked list */
+void deleteNode(struct Node **head_ref, int key)
+{
+    // Store head node
+    struct Node* temp = *head_ref, *prev;
+
+    // If head node itself holds the key to be deleted
+    if (temp != NULL && temp->data == key)
+    {
+        *head_ref = temp->next;   // Changed head
+        free(temp);               // free old head
+        return;
+    }
+
+    // Search for the key to be deleted, keep track of the
+    // previous node as we need to change 'prev->next'
+    while (temp != NULL && temp->data != key)
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    // If key was not present in linked list
+    if (temp == NULL) {
+        printf("Was NOT in the list");
+        return;
+    }
+
+    // Unlink the node from linked list
+    prev->next = temp->next;
+
+    free(temp);  // Free memory
+}
+
+/* Checks whether the value x is present in linked list */
+bool search(struct Node* head, int x)
+{
+    struct Node* current = head;  // Initialize current
+    while (current != NULL)
+    {
+        if (current->data == x)
+            return true;
+        current = current->next;
+    }
+    return false;
+}
+
+void searchResult(struct Node* head, int x)
+{
+    search(head, x)?printf("\n %d is in it",x):printf("\n %d is not in it", x);
 }
 
 // This function prints contents of linked list starting from head
@@ -114,8 +167,12 @@ int main()
 // Insert 8, after 7. So linked list becomes 1->7->8->6->4->NULL
     insertAfter(head->next, 8);
 
+    deleteNode(&head, 11);
+
     printf("\n Created Linked list is: ");
     printList(head);
+
+    searchResult(head, 11);
 
     return 0;
 }

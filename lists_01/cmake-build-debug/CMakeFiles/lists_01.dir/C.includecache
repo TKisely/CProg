@@ -9,4 +9,8 @@
 /Users/tkisely/CDEV/CProg/lists_01/main.c
 stdio.h
 -
+stdlib.h
+-
+stdbool.h
+-
 
